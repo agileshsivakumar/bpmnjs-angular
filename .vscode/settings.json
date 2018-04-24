@@ -1,0 +1,14 @@
+{
+    "editor.formatOnType": true,
+    "editor.formatOnSave": true,
+    "html.format.enable": true,
+    "html.format.wrapLineLength": 120,
+    "typescript.format.insertSpaceAfterCommaDelimiter": true,
+    "typescript.format.enable": true,
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+    "css.validate": true,
+    "scss.validate": true,
+    "typescript.format.insertSpaceAfterTypeAssertion": true,
+    "window.zoomLevel": 0,
+    "workbench.startupEditor": "newUntitledFile",
+}
