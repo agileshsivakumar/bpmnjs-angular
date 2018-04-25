@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as BpmnViewer from 'bpmn-js';
-import * as PrioritiesModule from 'bpmn-js-task-priorities/lib/priorities';
+import * as ColorRendererModule from '../ColorRendererModule';
 
 @Component({
     selector: 'app-bpmn-viewer',
@@ -19,7 +19,7 @@ export class BpmnViewerComponent implements OnInit {
         this.bpmnViewer = new BpmnViewer.default({
             container: '#bpmn-container',
             additionalModules: [
-                PrioritiesModule
+                ColorRendererModule
             ]
         });
         this.loadSampleBpmnDiagram();
