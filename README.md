@@ -1,6 +1,7 @@
 # BpmnjsAngular
 
 Sample project to wrap bpmnjs `v-1.2.1` into a @NgModule
+
 Used ColorRenderer from bpmn-js-task-priorities `v-0.2.0` for colors
 
 ## Run the project
