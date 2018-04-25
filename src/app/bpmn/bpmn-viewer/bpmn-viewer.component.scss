@@ -1,17 +1,5 @@
 .bpmn-style {
     padding: 15px;
     height: 800px;
-    outline: 1px solid black;
-}
-
-.event:not(.djs-connection) .djs-visual> :nth-child(1) {
-    fill: green !important;
-    stroke: blue !important;
-    opacity: 0.5;
-}
-
-.task:not(.djs-connection) .djs-visual> :nth-child(1) {
-    fill: red !important;
-    stroke: yellow !important;
-    opacity: 0.5;
+    width: 1024px;
 }
