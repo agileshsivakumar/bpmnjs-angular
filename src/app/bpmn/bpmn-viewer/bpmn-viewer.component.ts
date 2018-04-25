@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as PriorityAwareViewer from '../PriorityAwareViewer/PriorityAwareViewer';
+import * as BpmnViewer from 'bpmn-js';
+import * as PrioritiesModule from 'bpmn-js-task-priorities/lib/priorities';
 
 @Component({
     selector: 'app-bpmn-viewer',
@@ -15,7 +16,12 @@ export class BpmnViewerComponent implements OnInit {
     constructor(private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.bpmnViewer = new PriorityAwareViewer({ container: '#bpmn-container' });
+        this.bpmnViewer = new BpmnViewer.default({
+            container: '#bpmn-container',
+            additionalModules: [
+                PrioritiesModule
+            ]
+        });
         this.loadSampleBpmnDiagram();
     }
 
