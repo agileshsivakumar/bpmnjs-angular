@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as bpmn from 'bpmn-js';
+import * as PriorityAwareViewer from '../PriorityAwareViewer/PriorityAwareViewer';
 
 @Component({
     selector: 'app-bpmn-viewer',
@@ -15,30 +15,21 @@ export class BpmnViewerComponent implements OnInit {
     constructor(private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.bpmnViewer = new bpmn.default({ container: '#bpmn-container' });
+        this.bpmnViewer = new PriorityAwareViewer({ container: '#bpmn-container' });
         this.loadSampleBpmnDiagram();
     }
 
     private loadSampleBpmnDiagram() {
-        // sample bpmn url
-        const url = 'https://cdn.rawgit.com/bpmn-io/bpmn-js-examples/dfceecba/colors/resources/pizza-collaboration.bpmn';
+        const url = 'assets/pizza.bpmn';
         this.httpClient.get(
             url,
             { responseType: 'text' }
         ).subscribe(
             (bpmnDownloadResponse) => {
-                const that = this;
-                this.bpmnViewer.importXML(bpmnDownloadResponse, function () {
-                    const bpmnContainer = that.bpmnViewer.get('canvas');
-                    bpmnContainer.addMarker('OrderReceivedEvent', 'event'); // using the id of the event tag and assigning class to it
-                    bpmnContainer.addMarker('CalmCustomerTask', 'task');
-                    bpmnContainer.addMarker('_6-463', 'event');
-                });
+                this.bpmnViewer.importXML(bpmnDownloadResponse);
             },
             (bpmnDownloadError) => {
-                if (bpmnDownloadError) {
-                    console.log('error rendering', bpmnDownloadError);
-                }
+                // handle error
             }
         );
     }
