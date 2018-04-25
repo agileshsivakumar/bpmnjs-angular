@@ -104,27 +104,6 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ "./src/app/bpmn/PriorityAwareViewer/PriorityAwareViewer.js":
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Viewer = __webpack_require__("./node_modules/bpmn-js-task-priorities/node_modules/bpmn-js/lib/Viewer.js");
-function PriorityAwareViewer(options) {
-    Viewer.call(this, options);
-}
-
-var inherits = __webpack_require__("./node_modules/inherits/inherits_browser.js");
-inherits(PriorityAwareViewer, Viewer);
-
-module.exports = PriorityAwareViewer;
-
-var prioritiesModule = __webpack_require__("./node_modules/bpmn-js-task-priorities/lib/priorities/index.js");
-PriorityAwareViewer.prototype._modules = PriorityAwareViewer.prototype._modules.concat([prioritiesModule]);
-
-/***/ }),
-
 /***/ "./src/app/bpmn/bpmn-viewer/bpmn-viewer.component.html":
 /***/ (function(module, exports) {
 
@@ -146,8 +125,9 @@ module.exports = ".bpmn-style {\n  padding: 15px;\n  height: 800px;\n  outline: 
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return BpmnViewerComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("./node_modules/@angular/core/esm5/core.js");
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_common_http__ = __webpack_require__("./node_modules/@angular/common/esm5/http.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PriorityAwareViewer_PriorityAwareViewer__ = __webpack_require__("./src/app/bpmn/PriorityAwareViewer/PriorityAwareViewer.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__PriorityAwareViewer_PriorityAwareViewer___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__PriorityAwareViewer_PriorityAwareViewer__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_bpmn_js__ = __webpack_require__("./node_modules/bpmn-js/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bpmn_js_task_priorities_lib_priorities__ = __webpack_require__("./node_modules/bpmn-js-task-priorities/lib/priorities/index.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_bpmn_js_task_priorities_lib_priorities___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_bpmn_js_task_priorities_lib_priorities__);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -160,12 +140,18 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
 var BpmnViewerComponent = /** @class */ (function () {
     function BpmnViewerComponent(httpClient) {
         this.httpClient = httpClient;
     }
     BpmnViewerComponent.prototype.ngOnInit = function () {
-        this.bpmnViewer = new __WEBPACK_IMPORTED_MODULE_2__PriorityAwareViewer_PriorityAwareViewer__({ container: '#bpmn-container' });
+        this.bpmnViewer = new __WEBPACK_IMPORTED_MODULE_2_bpmn_js__["a" /* default */]({
+            container: '#bpmn-container',
+            additionalModules: [
+                __WEBPACK_IMPORTED_MODULE_3_bpmn_js_task_priorities_lib_priorities__
+            ]
+        });
         this.loadSampleBpmnDiagram();
     };
     BpmnViewerComponent.prototype.loadSampleBpmnDiagram = function () {
@@ -277,20 +263,6 @@ Object(__WEBPACK_IMPORTED_MODULE_1__angular_platform_browser_dynamic__["a" /* pl
 
 module.exports = __webpack_require__("./src/main.ts");
 
-
-/***/ }),
-
-/***/ 1:
-/***/ (function(module, exports) {
-
-/* (ignored) */
-
-/***/ }),
-
-/***/ 2:
-/***/ (function(module, exports) {
-
-/* (ignored) */
 
 /***/ })
 
