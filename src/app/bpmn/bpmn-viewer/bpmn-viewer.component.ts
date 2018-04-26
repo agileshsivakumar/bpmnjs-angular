@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as BpmnViewer from 'bpmn-js';
-import * as ColorRendererModule from '../ColorRendererModule';
+import * as BpmnViewer from 'bpmn-js/lib/Viewer';
+import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/ColorRenderer';
 
 @Component({
     selector: 'app-bpmn-viewer',
@@ -18,9 +18,10 @@ export class BpmnViewerComponent implements OnInit {
     ngOnInit() {
         this.bpmnViewer = new BpmnViewer.default({
             container: '#bpmn-container',
-            additionalModules: [
-                ColorRendererModule
-            ]
+            additionalModules: [ {
+                __init__: [ 'colorRenderer' ],
+                colorRenderer: [ 'type', BpmnColorRenderer ]
+            } ]
         });
         this.loadSampleBpmnDiagram();
     }
