@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as BpmnViewer from 'bpmn-js';
-import * as ColorRendererModule from '../ColorRendererModule';
+import * as BpmnNavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
+import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/ColorRenderer';
 
 @Component({
     selector: 'app-bpmn-viewer',
@@ -16,11 +16,12 @@ export class BpmnViewerComponent implements OnInit {
     constructor(private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.bpmnViewer = new BpmnViewer.default({
+        this.bpmnViewer = new BpmnNavigatedViewer.default({
             container: '#bpmn-container',
-            additionalModules: [
-                ColorRendererModule
-            ]
+            additionalModules: [ {
+                __init__: [ 'colorRenderer' ],
+                colorRenderer: [ 'type', BpmnColorRenderer ]
+            } ]
         });
         this.loadSampleBpmnDiagram();
     }
@@ -32,12 +33,26 @@ export class BpmnViewerComponent implements OnInit {
             { responseType: 'text' }
         ).subscribe(
             (bpmnDownloadResponse) => {
-                this.bpmnViewer.importXML(bpmnDownloadResponse);
+                const that = this;
+                this.bpmnViewer.importXML(bpmnDownloadResponse, function () {
+                    that.bpmnViewer.get('canvas').zoom('fit-viewport');
+                    const eventBus = that.bpmnViewer.get('eventBus');
+                    eventBus.on('element.click', function (e) {
+                        console.log(e.element);
+                        console.log(e.gfx);
+                        console.log(event, 'on', e.element.id);
+                    });
+                });
             },
             (bpmnDownloadError) => {
                 // handle error
             }
         );
+    }
+
+    resetZoomLevelOfBpmnDiagram() {
+        const canvasElement = this.bpmnViewer.get('canvas');
+        canvasElement.zoom('fit-viewport');
     }
 
 }

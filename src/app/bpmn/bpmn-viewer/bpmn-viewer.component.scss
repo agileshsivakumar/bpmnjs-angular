@@ -1,5 +1,14 @@
-.bpmn-style {
-    padding: 15px;
-    height: 800px;
-    width: 1024px;
+.bpmn-body-container {
+    border: 1px solid #ddd;
+    .button-container {
+        text-align: right;
+        .reset-button {
+            margin: 10px 10px 10px 0px;
+            padding: 5px;
+        }
+    }
+    .bpmn-diagram-container {
+        height: 800px;
+        width: 1024px;
+    }
 }
