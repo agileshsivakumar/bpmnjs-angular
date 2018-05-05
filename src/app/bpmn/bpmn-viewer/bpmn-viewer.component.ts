@@ -11,19 +11,30 @@ import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/Color
     providers: [ HttpClient ]
 })
 export class BpmnViewerComponent implements OnInit {
-    private bpmnViewer: any;
+    private bpmnNavigatedViewer: any;
+    private bpmnModalNavigatedViewer: any;
+    private bpmnDownloadResponse = '';
 
     constructor(private httpClient: HttpClient) { }
 
     ngOnInit() {
-        this.bpmnViewer = new BpmnNavigatedViewer.default({
+        this.bpmnNavigatedViewer = new BpmnNavigatedViewer.default({
             container: '#bpmn-container',
             additionalModules: [ {
                 __init__: [ 'colorRenderer' ],
                 colorRenderer: [ 'type', BpmnColorRenderer ]
             } ]
         });
+        this.bpmnModalNavigatedViewer = new BpmnNavigatedViewer.default({
+            container: '#bpmn-modal-content-container',
+            additionalModules: [ {
+                __init__: [ 'colorRenderer' ],
+                colorRenderer: [ 'type', BpmnColorRenderer ]
+            } ]
+        });
         this.loadSampleBpmnDiagram();
+        const bpmnModal = document.getElementById('bpmn-modal-container');
+        document.body.appendChild(bpmnModal);
     }
 
     private loadSampleBpmnDiagram() {
@@ -34,9 +45,10 @@ export class BpmnViewerComponent implements OnInit {
         ).subscribe(
             (bpmnDownloadResponse) => {
                 const that = this;
-                this.bpmnViewer.importXML(bpmnDownloadResponse, function () {
-                    that.bpmnViewer.get('canvas').zoom('fit-viewport');
-                    const eventBus = that.bpmnViewer.get('eventBus');
+                this.bpmnDownloadResponse = bpmnDownloadResponse;
+                this.bpmnNavigatedViewer.importXML(this.bpmnDownloadResponse, function () {
+                    that.bpmnNavigatedViewer.get('canvas').zoom('fit-viewport');
+                    const eventBus = that.bpmnNavigatedViewer.get('eventBus');
                     eventBus.on('element.click', function (e) {
                         console.log(e.element);
                         console.log(e.gfx);
@@ -51,8 +63,28 @@ export class BpmnViewerComponent implements OnInit {
     }
 
     resetZoomLevelOfBpmnDiagram() {
-        const canvasElement = this.bpmnViewer.get('canvas');
+        const canvasElement = this.bpmnNavigatedViewer.get('canvas');
         canvasElement.zoom('fit-viewport');
+    }
+
+    showBpmnModalView() {
+        const bpmnModal = document.getElementById('bpmn-modal-container');
+        bpmnModal.style.display = 'block';
+        const that = this;
+        this.bpmnModalNavigatedViewer.importXML(this.bpmnDownloadResponse, function () {
+            that.bpmnModalNavigatedViewer.get('canvas').zoom('fit-viewport');
+            const eventBus = that.bpmnModalNavigatedViewer.get('eventBus');
+            eventBus.on('element.click', function (e) {
+                console.log(e.element);
+                console.log(e.gfx);
+                console.log(event, 'on', e.element.id);
+            });
+        });
+    }
+
+    hideBpmnModalView() {
+        const bpmnModal = document.getElementById('bpmn-modal-container');
+        bpmnModal.style.display = 'none';
     }
 
 }
