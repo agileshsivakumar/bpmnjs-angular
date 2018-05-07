@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, HostListener, ViewChild } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import * as BpmnNavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
 import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/ColorRenderer';
@@ -33,8 +33,7 @@ export class BpmnViewerComponent implements OnInit {
             } ]
         });
         this.loadSampleBpmnDiagram();
-        const bpmnModal = document.getElementById('bpmn-modal-container');
-        document.body.appendChild(bpmnModal);
+        this.appendBpmnModalContainerToBody();
     }
 
     private loadSampleBpmnDiagram() {
@@ -62,12 +61,17 @@ export class BpmnViewerComponent implements OnInit {
         );
     }
 
-    resetZoomLevelOfBpmnDiagram() {
+    private appendBpmnModalContainerToBody() {
+        const bpmnModal = document.getElementById('bpmn-modal-container');
+        document.body.appendChild(bpmnModal);
+    }
+
+    public resetZoomLevelOfBpmnDiagram() {
         const canvasElement = this.bpmnNavigatedViewer.get('canvas');
         canvasElement.zoom('fit-viewport');
     }
 
-    showBpmnModalView() {
+    public showBpmnModalView() {
         const bpmnModal = document.getElementById('bpmn-modal-container');
         bpmnModal.style.display = 'block';
         const that = this;
@@ -82,7 +86,7 @@ export class BpmnViewerComponent implements OnInit {
         });
     }
 
-    hideBpmnModalView() {
+    public hideBpmnModalView() {
         const bpmnModal = document.getElementById('bpmn-modal-container');
         bpmnModal.style.display = 'none';
     }
