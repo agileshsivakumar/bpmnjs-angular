@@ -13,7 +13,7 @@ import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/Color
 export class BpmnViewerComponent implements OnInit {
     private bpmnNavigatedViewer: any;
     private bpmnModalNavigatedViewer: any;
-    private bpmnDownloadResponse = '';
+    public bpmnDownloadResponse = '';
 
     constructor(private httpClient: HttpClient) { }
 
@@ -36,17 +36,26 @@ export class BpmnViewerComponent implements OnInit {
         this.appendBpmnModalContainerToBody();
     }
 
-    private loadSampleBpmnDiagram() {
+    public loadSampleBpmnDiagram() {
         const url = 'assets/pizza.bpmn';
-        this.httpClient.get(
-            url,
-            { responseType: 'text' }
-        ).subscribe(
-            (bpmnDownloadResponse) => {
+        this.httpClient.get(url, { responseType: 'text' })
+            .subscribe((bpmnDownloadResponse) => {
                 const that = this;
                 this.bpmnDownloadResponse = bpmnDownloadResponse;
                 this.bpmnNavigatedViewer.importXML(this.bpmnDownloadResponse, function () {
                     that.bpmnNavigatedViewer.get('canvas').zoom('fit-viewport');
+                    that.bpmnNavigatedViewer._definitions.diagrams[ 0 ].plane.planeElement.forEach(moddleElement => {
+                        if (moddleElement.bpmnElement.$type === 'bpmn:StartEvent') {
+                            that.bpmnNavigatedViewer.get('canvas').addMarker(moddleElement.bpmnElement.id, 'highlight-green');
+                        }
+                        if (moddleElement.bpmnElement.$type === 'bpmn:EndEvent') {
+                            that.bpmnNavigatedViewer.get('canvas').addMarker(moddleElement.bpmnElement.id, 'highlight-red');
+                        }
+                        if (moddleElement.bpmnElement.$type === 'bpmn:ExclusiveGateway') {
+                            that.bpmnNavigatedViewer.get('canvas').addMarker(moddleElement.bpmnElement.id, 'highlight-yellow');
+                        }
+                        that.bpmnNavigatedViewer._container.getElementsByClassName('bjs-powered-by')[ 0 ].children[ 0 ].width = 26;
+                    });
                     const eventBus = that.bpmnNavigatedViewer.get('eventBus');
                     eventBus.on('element.click', function (e) {
                         console.log(e.element);
@@ -54,11 +63,10 @@ export class BpmnViewerComponent implements OnInit {
                         console.log(event, 'on', e.element.id);
                     });
                 });
-            },
-            (bpmnDownloadError) => {
+            }, (bpmnDownloadError) => {
                 // handle error
             }
-        );
+            );
     }
 
     private appendBpmnModalContainerToBody() {

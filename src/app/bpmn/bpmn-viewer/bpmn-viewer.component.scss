@@ -17,9 +17,9 @@
     position: fixed;
     z-index: 101;
     left: 0;
-    top: 0;
+    top: 50px;
     width: 100%;
-    height: 100%;
+    height: calc(100% - 50px);
     overflow: auto;
     background-color:white;
     .bpmn-modal-content-style {
@@ -58,4 +58,26 @@
 @keyframes zoom {
     from {transform:scale(0)} 
     to {transform:scale(1)}
+}
+
+// .up-bpmn.modal-container,
+// .up-bomn-body-contianer {
+
+    .highlight-green:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: green !important;
+    }
+    
+    .highlight-red:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: red !important;
+    }
+    
+    .highlight-yellow:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: yellow !important;
+    }
+    
+// }
+
+
+.bjs-powered-by img {
+    width: 20px;
 }
