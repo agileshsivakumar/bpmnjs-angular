@@ -1,6 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ComponentFixture, TestBed, async } from '@angular/core/testing';
 import { BpmnViewerComponent } from './bpmn-viewer.component';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 describe('BpmnViewerComponent', () => {
   let bpmnViewerComponent: BpmnViewerComponent;
