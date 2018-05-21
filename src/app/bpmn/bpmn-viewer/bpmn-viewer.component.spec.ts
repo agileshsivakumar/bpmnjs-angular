@@ -3,35 +3,35 @@ import { BpmnViewerComponent } from './bpmn-viewer.component';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 describe('BpmnViewerComponent', () => {
-    let bpmnViewerComponent: BpmnViewerComponent;
-    let bpmnViewerComponentFixture: ComponentFixture<BpmnViewerComponent>;
+  let bpmnViewerComponent: BpmnViewerComponent;
+  let bpmnViewerComponentFixture: ComponentFixture<BpmnViewerComponent>;
 
-    beforeEach(async(() => {
-        TestBed.configureTestingModule({
-            imports: [ HttpClientModule ],
-            declarations: [ BpmnViewerComponent ],
-            providers: [ HttpClient ]
-        }).compileComponents();
-    }));
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ HttpClientModule ],
+      declarations: [ BpmnViewerComponent ],
+      providers: [ HttpClient ]
+    }).compileComponents();
+  }));
 
-    beforeEach(() => {
-        bpmnViewerComponentFixture = TestBed.createComponent(BpmnViewerComponent);
-        bpmnViewerComponent = bpmnViewerComponentFixture.componentInstance;
-        bpmnViewerComponentFixture.detectChanges();
-    });
+  beforeEach(() => {
+    bpmnViewerComponentFixture = TestBed.createComponent(BpmnViewerComponent);
+    bpmnViewerComponent = bpmnViewerComponentFixture.componentInstance;
+    bpmnViewerComponentFixture.detectChanges();
+  });
 
-    it('should create the BpmnViewerComponent', () => {
-        expect(bpmnViewerComponent).toBeTruthy();
-    });
+  it('should create the BpmnViewerComponent', () => {
+    expect(bpmnViewerComponent).toBeTruthy();
+  });
 
-    it('should render bpmn view', () => {
-        bpmnViewerComponent.bpmnDownloadResponse = MockBpmnViewer.bpmnTestXml;
-        expect(bpmnViewerComponentFixture.nativeElement.getElementsByClassName('bjs-container')).toBeTruthy();
-    });
+  it('should render bpmn view', () => {
+    bpmnViewerComponent.bpmnDownloadResponse = MockBpmnViewer.bpmnTestXml;
+    expect(bpmnViewerComponentFixture.nativeElement.getElementsByClassName('bjs-container')).toBeTruthy();
+  });
 });
 
 class MockBpmnViewer {
-    static bpmnTestXml = `<?xml version="1.0" encoding="UTF-8"?>
+  static bpmnTestXml = `<?xml version="1.0" encoding="UTF-8"?>
     <definitions
     xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
     xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
@@ -81,4 +81,3 @@ class MockBpmnViewer {
     </bpmndi:BPMNDiagram>
   </definitions>`;
 }
-

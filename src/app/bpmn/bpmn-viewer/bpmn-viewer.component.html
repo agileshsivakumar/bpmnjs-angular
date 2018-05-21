@@ -1,12 +1,16 @@
-<div class="bpmn-body-container">
-    <div class="button-container">
-        <button class="reset-button" title="Reset" (click)="resetZoomLevelOfBpmnDiagram()" type="button">Reset</button>
-        <button class="popout-button" title="Pop Out" (click)="showBpmnModalView()" type="button">Pop Out</button>
+<div class="bpmn-viewer-container">
+    <div class="bpmn-viewer-button-container">
+        <button class="bpmn-viewer-reset-button" title="Reset" (click)="resetBpmnZoom()" type="button">Reset</button>
+        <button class="bpmn-viewer-popout-button" title="Pop Out" (click)="showBpmnModalView()" type="button">Popout</button>
     </div>
-    <div id="bpmn-container" class="bpmn-diagram-container"></div>
+    <div id="bpmn-viewer-content-diagram" class="bpmn-viewer-content"></div>
 </div>
 
-<div #bpmnModalContainer id="bpmn-modal-container" class="bpmn-modal-style">
-    <span (click)="hideBpmnModalView()" class="bpmn-close">&times;</span>
-    <div id="bpmn-modal-content-container" class="bpmn-modal-content-style"></div>
+<div #bpmnModalContainer [hidden]="isBpmnModalHidden" class="bpmn-viewer-modal-container">
+    <div class="bpmn-viewer-modal-border-container">
+        <span (click)="hideBpmnModalView()" class="bpmn-viewer-modal-close-button">
+            <span>&times;</span>
+        </span>
+        <div id="bpmn-viewer-modal-content-diagram" class="bpmn-viewer-modal-content"></div>
+    </div>
 </div>

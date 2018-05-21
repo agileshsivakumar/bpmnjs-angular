@@ -1,19 +1,31 @@
-.bpmn-body-container {
+//
+// Bpmn
+//
+$bpmn-start-element-color: #6ecf96 !default;
+$bpmn-decision-element-color: #d7d774 !default;
+$bpmn-end-element-color: #ea6677 !default;
+$bpmn-logo-height: 20px;
+
+.bpmn-viewer-container {
     border: 1px solid #ddd;
-    .button-container {
+    z-index: 10;
+    .bpmn-viewer-button-container {
+        position: absolute;
+        right: 20px;
+        z-index: 100;
         text-align: right;
-        .reset-button, .popout-button {
+        top: 10px;
+        .bpmn-viewer-reset-button, .bpmn-viewer-popout-button {
             cursor: pointer;
             margin: 10px 10px 10px 0px;
         }
     }
-    .bpmn-diagram-container {
+    .bpmn-viewer-content {
         height: 500px;
     }
 }
 
-.bpmn-modal-style {
-    display: none;
+.bpmn-viewer-modal-container {
     position: fixed;
     z-index: 101;
     left: 0;
@@ -21,57 +33,54 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color:white;
-    .bpmn-modal-content-style {
-        margin: auto;
-        display: block;
-        width: 100%;
-        height: 100%;
-        -webkit-animation-name: zoom;
-        -webkit-animation-duration: 0.6s;
-        animation-name: zoom;
-        animation-duration: 0.6s;
+    background-color: white;
+    .bpmn-viewer-modal-border-container {
+        border: 1px solid #ddd;
+        margin: 15px;
+        height: calc(100% - 30px);
+        .bpmn-viewer-modal-content {
+            margin: auto;
+            width: 100%;
+            height: 100%;
+            animation-name: bpmn-viewer-zoom-animation;
+            animation-duration: 0.6s;
+            @keyframes bpmn-viewer-zoom-animation {
+                from {transform:scale(0)}
+                to {transform:scale(1)}
+            }
+        }
+        .bpmn-viewer-modal-close-button {
+            position: absolute;
+            z-index: 102;
+            top: 15px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            transition: 0.3s;
+            &:hover, &:focus {
+                color: #bbb;
+                cursor: pointer;
+                text-decoration: none;
+            }
+        }
     }
-    .bpmn-close {
-        position: absolute;
-        z-index: 102;
-        top: 15px;
-        right: 35px;
-        color: #f1f1f1;
-        font-size: 40px;
-        font-weight: bold;
-        transition: 0.3s;
+}
+
+.bpmn-viewer-content, .bpmn-viewer-modal-content {
+    .highlight-green:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: $bpmn-start-element-color !important;
     }
-    
-    .bpmn-close:hover, .bpmn-close:focus {
-        color: #bbb;
-        text-decoration: none;
-        cursor: pointer;
+
+    .highlight-yellow:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: $bpmn-decision-element-color !important;
     }
-}
 
-@-webkit-keyframes zoom {
-    from {-webkit-transform:scale(0)} 
-    to {-webkit-transform:scale(1)}
-}
+    .highlight-red:not(.djs-connection) .djs-visual > :nth-child(1) {
+        fill: $bpmn-end-element-color !important;
+    }
 
-@keyframes zoom {
-    from {transform:scale(0)} 
-    to {transform:scale(1)}
-}
-
-.highlight-green:not(.djs-connection) .djs-visual > :nth-child(1) {
-    fill: green !important;
-}
-
-.highlight-red:not(.djs-connection) .djs-visual > :nth-child(1) {
-    fill: red !important;
-}
-
-.highlight-yellow:not(.djs-connection) .djs-visual > :nth-child(1) {
-    fill: yellow !important;
-}
-
-.bjs-powered-by img {
-    width: 20px;
+    .bjs-powered-by img {
+        height: $bpmn-logo-height;
+    }
 }
