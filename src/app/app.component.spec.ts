@@ -4,12 +4,8 @@ import { BpmnModule } from './bpmn/bpmn.module';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        BpmnModule
-      ],
-      declarations: [
-        AppComponent
-      ]
+      imports: [BpmnModule],
+      declarations: [AppComponent]
     }).compileComponents();
   }));
   it('should create the app', async(() => {

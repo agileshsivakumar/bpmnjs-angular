@@ -1,14 +1,33 @@
 {
-    "editor.formatOnType": true,
-    "editor.formatOnSave": true,
-    "html.format.enable": true,
-    "html.format.wrapLineLength": 120,
-    "typescript.format.insertSpaceAfterCommaDelimiter": true,
-    "typescript.format.enable": true,
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
-    "css.validate": true,
-    "scss.validate": true,
-    "typescript.format.insertSpaceAfterTypeAssertion": true,
-    "window.zoomLevel": 0,
-    "workbench.startupEditor": "newUntitledFile",
+  "terminal.integrated.shell.windows": "C:\\windows\\System32\\cmd.exe",
+  "javascript.implicitProjectConfig.experimentalDecorators": true,
+  "editor.autoIndent": true,
+  "editor.codeLens": false,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "line",
+  "editor.fontSize": 14,
+  "editor.fontLigatures": true,
+  "editor.formatOnPaste": true,
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true,
+  "editor.minimap.enabled": false,
+  "editor.renderWhitespace": "none",
+  "editor.tabCompletion": true,
+  "editor.wordWrap": "off",
+  "explorer.confirmDragAndDrop": false,
+  "explorer.openEditors.visible": 0,
+  "files.exclude": {
+    "**/*.js": {
+      "when": "$(basename).ts"
+    },
+    "**/*.js.map": {
+      "when": "$(basename)"
+    }
+  },
+  "files.hotExit": "onExit",
+  "files.defaultLanguage": "typescript",
+  "files.trimTrailingWhitespace": true,
+  "window.zoomLevel": 0,
+  "zenMode.centerLayout": false,
+  "tslint.autoFixOnSave": true
 }

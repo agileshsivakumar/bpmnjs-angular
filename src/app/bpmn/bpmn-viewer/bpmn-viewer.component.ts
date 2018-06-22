@@ -1,58 +1,137 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import * as BpmnNavigatedViewer from 'bpmn-js/lib/NavigatedViewer';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  Renderer2,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import * as BpmnColorRenderer from 'bpmn-js-task-priorities/lib/priorities/ColorRenderer';
+declare let BpmnJS: any;
 
 @Component({
-    selector: 'app-bpmn-viewer',
-    templateUrl: './bpmn-viewer.component.html',
-    styleUrls: [ './bpmn-viewer.component.scss' ],
-    encapsulation: ViewEncapsulation.None,
-    providers: [ HttpClient ]
+  selector: 'app-bpmn-viewer',
+  templateUrl: './bpmn-viewer.component.html',
+  styleUrls: ['./bpmn-viewer.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [HttpClient]
 })
 export class BpmnViewerComponent implements OnInit {
-    private bpmnViewer: any;
+  @ViewChild('bpmnModalContainer') private _bpmnModalContainer: ElementRef;
 
-    constructor(private httpClient: HttpClient) { }
+  private _bpmnNavigatedViewer: any;
+  private _bpmnModalNavigatedViewer: any;
+  private _bpmnDownloadResponse = '';
+  private _isBpmnModalHidden = true;
 
-    ngOnInit() {
-        this.bpmnViewer = new BpmnNavigatedViewer.default({
-            container: '#bpmn-container',
-            additionalModules: [ {
-                __init__: [ 'colorRenderer' ],
-                colorRenderer: [ 'type', BpmnColorRenderer ]
-            } ]
-        });
-        this.loadSampleBpmnDiagram();
-    }
+  set bpmnDownloadResponse(bpmnDownloadResponse: string) {
+    this._bpmnDownloadResponse = bpmnDownloadResponse;
+  }
+  get isBpmnModalHidden() {
+    return this._isBpmnModalHidden;
+  }
 
-    private loadSampleBpmnDiagram() {
-        const url = 'assets/pizza.bpmn';
-        this.httpClient.get(
-            url,
-            { responseType: 'text' }
-        ).subscribe(
-            (bpmnDownloadResponse) => {
-                const that = this;
-                this.bpmnViewer.importXML(bpmnDownloadResponse, function () {
-                    that.bpmnViewer.get('canvas').zoom('fit-viewport');
-                    const eventBus = that.bpmnViewer.get('eventBus');
-                    eventBus.on('element.click', function (e) {
-                        console.log(e.element);
-                        console.log(e.gfx);
-                        console.log(event, 'on', e.element.id);
-                    });
-                });
-            },
-            (bpmnDownloadError) => {
-                // handle error
-            }
+  constructor(private httpClient: HttpClient, private _renderer2: Renderer2) {}
+
+  ngOnInit() {
+    this._bpmnNavigatedViewer = new BpmnJS({
+      container: '#bpmn-viewer-content-diagram',
+      additionalModules: [
+        {
+          __init__: ['colorRenderer'],
+          colorRenderer: ['type', BpmnColorRenderer]
+        }
+      ]
+    });
+    this._bpmnModalNavigatedViewer = new BpmnJS({
+      container: '#bpmn-viewer-modal-content-diagram',
+      additionalModules: [
+        {
+          __init__: ['colorRenderer'],
+          colorRenderer: ['type', BpmnColorRenderer]
+        }
+      ]
+    });
+    this.loadSampleBpmnDiagram();
+    this.appendBpmnModalContainerToBody();
+  }
+
+  public loadSampleBpmnDiagram() {
+    const url = 'assets/pizza.bpmn';
+    this.httpClient.get(url, { responseType: 'text' }).subscribe(
+      bpmnDownloadResponse => {
+        const that = this;
+        this._bpmnDownloadResponse = bpmnDownloadResponse;
+        this._bpmnNavigatedViewer.importXML(
+          this._bpmnDownloadResponse,
+          function() {
+            that.customizeBpmnDiagram(that._bpmnNavigatedViewer);
+            that.resetBpmnZoom(that._bpmnNavigatedViewer);
+          }
         );
-    }
+      },
+      bpmnDownloadError => {
+        // handle error
+      }
+    );
+  }
 
-    resetZoomLevelOfBpmnDiagram() {
-        const canvasElement = this.bpmnViewer.get('canvas');
-        canvasElement.zoom('fit-viewport');
-    }
+  public showBpmnModalView() {
+    this._isBpmnModalHidden = false;
+    const that = this;
+    this._bpmnModalNavigatedViewer.importXML(
+      this._bpmnDownloadResponse,
+      function() {
+        that.customizeBpmnDiagram(that._bpmnModalNavigatedViewer);
+        that.resetBpmnZoom(that._bpmnModalNavigatedViewer);
+      }
+    );
+  }
 
+  private customizeBpmnDiagram(bpmnViewerElement: any) {
+    try {
+      bpmnViewerElement._definitions.diagrams[0].plane.planeElement.forEach(
+        moddleElement => {
+          this.addBpmnMarker(
+            bpmnViewerElement.get('canvas'),
+            moddleElement.bpmnElement.$type,
+            moddleElement.bpmnElement.id
+          );
+        }
+      );
+    } catch (bpmnCustomizationError) {}
+  }
+
+  private addBpmnMarker(bpmnCanvas: any, bpmnType: string, bpmnId: string) {
+    switch (bpmnType) {
+      case 'bpmn:StartEvent':
+        bpmnCanvas.addMarker(bpmnId, 'highlight-green');
+        break;
+      case 'bpmn:EndEvent':
+        bpmnCanvas.addMarker(bpmnId, 'highlight-red');
+        break;
+      case 'bpmn:ExclusiveGateway':
+        bpmnCanvas.addMarker(bpmnId, 'highlight-yellow');
+        break;
+      default:
+        break;
+    }
+  }
+
+  private appendBpmnModalContainerToBody() {
+    this._renderer2.appendChild(
+      document.body,
+      this._bpmnModalContainer.nativeElement
+    );
+  }
+
+  public resetBpmnZoom(bpmnViewerElement?: any) {
+    const bpmnViewer = bpmnViewerElement || this._bpmnNavigatedViewer;
+    bpmnViewer.get('canvas').zoom('fit-viewport');
+  }
+
+  public hideBpmnModalView() {
+    this._isBpmnModalHidden = true;
+  }
 }
