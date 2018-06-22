@@ -8,9 +8,9 @@ describe('BpmnViewerComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ HttpClientModule ],
-      declarations: [ BpmnViewerComponent ],
-      providers: [ HttpClient ]
+      imports: [HttpClientModule],
+      declarations: [BpmnViewerComponent],
+      providers: [HttpClient]
     }).compileComponents();
   }));
 
@@ -26,7 +26,11 @@ describe('BpmnViewerComponent', () => {
 
   it('should render bpmn view', () => {
     bpmnViewerComponent.bpmnDownloadResponse = MockBpmnViewer.bpmnTestXml;
-    expect(bpmnViewerComponentFixture.nativeElement.getElementsByClassName('bjs-container')).toBeTruthy();
+    expect(
+      bpmnViewerComponentFixture.nativeElement.getElementsByClassName(
+        'bjs-container'
+      )
+    ).toBeTruthy();
   });
 });
 

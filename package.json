@@ -4,11 +4,11 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --prod",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "start": "ng serve dev",
+    "prod:start": "ng serve dev --prod",
+    "build": "ng build dev --prod",
+    "test": "ng test dev",
+    "lint": "ng lint dev"
   },
   "private": true,
   "dependencies": {
@@ -24,8 +24,8 @@
     "bpmn-js": "1.2.1",
     "bpmn-js-task-priorities": "0.2.0",
     "core-js": "2.4.1",
-    "rxjs": "^6.1.0",
-    "zone.js": "^0.8.26"
+    "rxjs": "6.1.0",
+    "zone.js": "0.8.26"
   },
   "devDependencies": {
     "@angular/cli": "^6.0.1",
